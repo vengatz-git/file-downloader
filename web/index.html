@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>TG VPS Downloader</title>
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#0088CC">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="icon" type="image/svg+xml" href="/icon.svg">
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <div class="app-container">
+    <header>
+      <div class="brand">
+        <svg viewBox="0 0 512 512" fill="none">
+          <rect width="512" height="512" rx="128" fill="#0088CC"/>
+          <path d="M256 120V320M256 320L180 244M256 320L332 244" stroke="white" stroke-width="36" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M140 380H372" stroke="white" stroke-width="36" stroke-linecap="round"/>
+        </svg>
+        <h1>TG Downloader</h1>
+      </div>
+      <span class="badge">Web / PWA</span>
+    </header>
+
+    <!-- Error Alert Banner -->
+    <div id="error-alert" class="alert-error hidden">
+      <span id="error-text">Error message here</span>
+      <button id="dismiss-error" style="background:none; border:none; color:inherit; cursor:pointer;">✕</button>
+    </div>
+
+    <!-- Server Settings Card (Collapsible) -->
+    <div class="card" style="padding: 12px 18px;">
+      <button id="toggle-settings" class="collapsible-toggle">
+        ⚙️ <span>Configure VPS Backend URL</span>
+      </button>
+      <div id="settings-body" class="input-group hidden" style="margin-top: 10px;">
+        <label class="input-label" for="backend-url">Backend Server Origin</label>
+        <input type="url" id="backend-url" placeholder="http://localhost:8000">
+      </div>
+    </div>
+
+    <!-- Link Input Card -->
+    <div class="card">
+      <div class="card-title">Resolve Telegram Media</div>
+      <div class="card-subtitle">Paste any public or private channel post link to resolve MTProto media.</div>
+      
+      <div class="input-group">
+        <input type="text" id="tg-link" placeholder="https://t.me/c/1234567890/456" autofocus>
+      </div>
+
+      <div style="display: flex; gap: 8px;">
+        <button id="btn-paste" class="btn btn-outline" style="flex: 1;">📋 Paste</button>
+        <button id="btn-resolve" class="btn btn-primary" style="flex: 2;">
+          <span id="resolve-spinner" class="spinner hidden"></span>
+          <span id="resolve-btn-text">Resolve Link</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Resolved File Metadata Card -->
+    <div id="metadata-card" class="card hidden">
+      <div class="meta-row">
+        <div class="file-icon-box">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path>
+            <polyline points="13 2 13 9 20 9"></polyline>
+          </svg>
+        </div>
+        <div class="file-details">
+          <div id="file-name" class="file-name">filename.mp4</div>
+          <div id="file-sub" class="file-sub">120 MB • video/mp4</div>
+        </div>
+      </div>
+
+      <div id="caption-container" class="caption-box hidden"></div>
+
+      <!-- Download Button: Directly hands off to browser/Android Download Manager with Range/Resume -->
+      <a id="btn-native-download" href="#" class="btn btn-success" download>
+        ⬇️ Download with Android / Browser
+      </a>
+
+      <!-- In-browser chunked progress stream (optional) -->
+      <button id="btn-stream-download" class="btn btn-outline">
+        ⚡ In-Browser Stream & Speed Test
+      </button>
+    </div>
+
+    <!-- In-Browser Stream Progress Card -->
+    <div id="progress-card" class="card hidden">
+      <div class="progress-container">
+        <div class="progress-header">
+          <span id="progress-status" style="font-weight: 600;">Streaming chunks...</span>
+          <span id="progress-speed" style="color: var(--primary); font-weight: 600;">0 KB/s</span>
+        </div>
+        <div class="progress-bar-bg">
+          <div id="progress-bar" class="progress-bar-fill"></div>
+        </div>
+        <div class="progress-header" style="color: var(--text-muted); font-size: 0.8rem;">
+          <span id="progress-bytes">0 MB / 0 MB</span>
+          <span id="progress-pct">0%</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="/app.js"></script>
+</body>
+</html>

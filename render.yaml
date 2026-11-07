@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: tg-file-downloader
+    env: node
+    buildCommand: cd backend-node && pnpm install --ignore-scripts
+    startCommand: node backend-node/server.js
+    envVars:
+      - key: TELEGRAM_API_ID
+        sync: false
+      - key: TELEGRAM_API_HASH
+        sync: false
+      - key: TELEGRAM_SESSION_STRING
+        sync: false
+      - key: PORT
+        value: "10000"
+    healthCheckPath: /health
